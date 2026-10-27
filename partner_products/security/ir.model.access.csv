@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_res_partner_product_user,res.partner.product.user,model_res_partner_product,base.group_user,1,1,1,1
+access_partner_product_version_user,partner.product.version.user,model_partner_product_version,base.group_user,1,1,1,1
+access_partner_product_bulk_add_user,partner.product.bulk.add.user,model_partner_product_bulk_add,base.group_user,1,1,1,1

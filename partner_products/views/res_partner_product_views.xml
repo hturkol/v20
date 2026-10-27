@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_partner_product_list_view" model="ir.ui.view">
+        <field name="name">res.partner.product.list</field>
+        <field name="model">res.partner.product</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="partner_id" />
+                <field name="product_id" />
+                <field name="version_id" />
+                <field
+                    name="partner_category_ids"
+                    widget="many2many_tags"
+                    optional="hide"
+                />
+                <field
+                    name="product_tag_ids"
+                    widget="many2many_tags"
+                    optional="hide"
+                />
+                <field name="note" optional="hide" />
+            </list>
+        </field>
+    </record>
+    <record id="res_partner_product_pivot_view" model="ir.ui.view">
+        <field name="name">res.partner.product.pivot</field>
+        <field name="model">res.partner.product</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="partner_id" type="row" />
+                <field name="product_tmpl_id" type="row" />
+                <field name="version_id" type="col" />
+            </pivot>
+        </field>
+    </record>
+    <record id="res_partner_product_form_view" model="ir.ui.view">
+        <field name="name">res.partner.product.form</field>
+        <field name="model">res.partner.product</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group>
+                        <field name="partner_id" />
+                        <field name="product_id" />
+                    </group>
+                    <group>
+                        <field name="product_tmpl_id" invisible="1" />
+                        <field
+                            name="version_id"
+                            domain="['|', ('product_tmpl_ids', '=', False), ('product_tmpl_ids', 'in', [product_tmpl_id])]"
+                        />
+                        <field name="note" />
+                    </group>
+                </group>
+            </form>
+        </field>
+    </record>
+    <record id="res_partner_product_search_view" model="ir.ui.view">
+        <field name="name">res.partner.product.search</field>
+        <field name="model">res.partner.product</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="partner_id" />
+                <field name="product_id" />
+                <field name="version_id" />
+                <filter
+                    name="group_by_partner"
+                    string="Customer"
+                    context="{'group_by': 'partner_id'}"
+                />
+                <filter
+                    name="group_by_product"
+                    string="Product"
+                    context="{'group_by': 'product_tmpl_id'}"
+                />
+                <filter
+                    name="group_by_version"
+                    string="Version"
+                    context="{'group_by': 'version_id'}"
+                />
+                <filter
+                    name="group_by_partner_category"
+                    string="Customer Tag"
+                    context="{'group_by': 'partner_category_ids'}"
+                />
+                <filter
+                    name="group_by_product_tag"
+                    string="Product Tag"
+                    context="{'group_by': 'product_tag_ids'}"
+                />
+            </search>
+        </field>
+    </record>
+    <record id="res_partner_product_action" model="ir.actions.act_window">
+        <field name="name">Customer Products</field>
+        <field name="res_model">res.partner.product</field>
+        <field name="view_mode">list,pivot,form</field>
+        <field
+            name="context"
+        >{'search_default_group_by_partner': 1, 'search_default_group_by_product': 1}</field>
+    </record>
+    <menuitem
+        id="menu_res_partner_product"
+        name="Products"
+        parent="menu_partner_products_root"
+        action="res_partner_product_action"
+        sequence="10"
+    />
+</odoo>

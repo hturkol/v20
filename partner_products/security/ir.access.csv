@@ -1,0 +1,4 @@
+id,name,model_id,group_id/id,operation,domain
+access_res_partner_product_user,res.partner.product.user,res.partner.product,base.group_user,crud,
+access_partner_product_version_user,partner.product.version.user,partner.product.version,base.group_user,crud,
+access_partner_product_bulk_add_user,partner.product.bulk.add.user,partner.product.bulk.add,base.group_user,crud,
