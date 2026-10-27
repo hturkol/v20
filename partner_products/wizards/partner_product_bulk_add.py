@@ -73,4 +73,10 @@ class PartnerProductBulkAdd(models.TransientModel):
                 for product in self.product_ids - existing
             ]
         )
-        return self.partner_id.get_formview_action()
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "res.partner",
+            "view_mode": "form",
+            "res_id": self.partner_id.id,
+            "target": "current",
+        }
