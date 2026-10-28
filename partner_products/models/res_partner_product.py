@@ -34,7 +34,7 @@ class ResPartnerProduct(models.Model):
     )
     version_id = fields.Many2one(
         comodel_name="partner.product.version",
-        string="Version",
+        string="Group",
         ondelete="set null",
     )
     partner_category_ids = fields.Many2many(

@@ -10,7 +10,7 @@ from odoo import fields, models
 
 class PartnerProductVersion(models.Model):
     _name = "partner.product.version"
-    _description = "Customer Product Version"
+    _description = "Customer Product Group"
     _order = "sequence, name"
 
     name = fields.Char(required=True, translate=True)
@@ -19,5 +19,5 @@ class PartnerProductVersion(models.Model):
     product_tmpl_ids = fields.Many2many(
         comodel_name="product.template",
         string="Products",
-        help="Leave empty to make this version available for all products.",
+        help="Leave empty to make this group available for all products.",
     )

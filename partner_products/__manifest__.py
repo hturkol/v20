@@ -7,7 +7,7 @@
 # in the root of this repository.
 {
     "name": "Partner Products",
-    "summary": "Track which products each customer owns and their installed versions",
+    "summary": "Track which products each customer owns and their assigned groups",
     "version": "20.0.1.0.0",
     "development_status": "Production/Stable",
     "author": "Projet İş Çözümleri Ltd. Şti.",

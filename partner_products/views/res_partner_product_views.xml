@@ -75,7 +75,7 @@
                 />
                 <filter
                     name="group_by_version"
-                    string="Version"
+                    string="Group"
                     context="{'group_by': 'version_id'}"
                 />
                 <filter

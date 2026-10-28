@@ -20,7 +20,7 @@ class PartnerProductBulkAdd(models.TransientModel):
     )
     version_id = fields.Many2one(
         comodel_name="partner.product.version",
-        string="Version",
+        string="Group",
     )
     categ_id = fields.Many2one(
         comodel_name="product.category",
