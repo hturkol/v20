@@ -123,7 +123,7 @@ msgid "Tags"
 msgstr "Etiketler"
 
 #. module: partner_products
-#: code:addons/partner_products/models/res_partner.py
+#: code:addons/partner_products/models/res_partner.py:37
 #: model_terms:ir.ui.view,arch_db:partner_products.partner_product_bulk_add_form_view
 msgid "Add Products"
 msgstr "Ürün Ekle"
