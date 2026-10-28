@@ -31,93 +31,93 @@ msgid "Bulk Add Products to Customer"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_partner_product_ids
+#: model:ir.model.fields,field_description:partner_products.field_res_partner__partner_product_ids
 #: model:ir.actions.act_window,name:partner_products.res_partner_product_action
 #: model:ir.ui.menu,name:partner_products.menu_partner_products_root
 msgid "Customer Products"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_partner_product_count
+#: model:ir.model.fields,field_description:partner_products.field_res_partner__partner_product_count
 msgid "Partner Product Count"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_partner_id
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add_partner_id
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__partner_id
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add__partner_id
 #: model_terms:ir.ui.view,arch_db:partner_products.res_partner_product_search_view
 msgid "Customer"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_product_id
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__product_id
 #: model_terms:ir.ui.view,arch_db:partner_products.res_partner_product_search_view
 msgid "Product"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_product_tmpl_id
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__product_tmpl_id
 msgid "Product Template"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_version_id
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add_version_id
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__version_id
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add__version_id
 #: model_terms:ir.ui.view,arch_db:partner_products.res_partner_product_search_view
 msgid "Group"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_partner_category_ids
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__partner_category_ids
 msgid "Customer Tags"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_product_tag_ids
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__product_tag_ids
 msgid "Product Tags"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_note
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__note
 msgid "Note"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_res_partner_product_sequence
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_version_sequence
+#: model:ir.model.fields,field_description:partner_products.field_res_partner_product__sequence
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_version__sequence
 msgid "Sequence"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_version_name
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_version__name
 msgid "Name"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_version_active
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_version__active
 msgid "Active"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_version_product_tmpl_ids
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add_product_ids
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_version__product_tmpl_ids
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add__product_ids
 #: model:ir.ui.menu,name:partner_products.menu_res_partner_product
 #: model_terms:ir.ui.view,arch_db:partner_products.res_partner_form_view
 msgid "Products"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,help:partner_products.field_partner_product_version_product_tmpl_ids
+#: model:ir.model.fields,help:partner_products.field_partner_product_version__product_tmpl_ids
 msgid "Leave empty to make this group available for all products."
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add_categ_id
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add__categ_id
 msgid "Product Category"
 msgstr ""
 
 #. module: partner_products
-#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add_tag_ids
+#: model:ir.model.fields,field_description:partner_products.field_partner_product_bulk_add__tag_ids
 msgid "Tags"
 msgstr ""
 

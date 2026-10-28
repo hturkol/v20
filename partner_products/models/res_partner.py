@@ -5,7 +5,7 @@
 # This file is part of a proprietary Odoo addon.
 # Use of this file is governed by the LICENSE file included
 # in the root of this repository.
-from odoo import fields, models
+from odoo import fields, models, _
 
 
 class ResPartner(models.Model):
@@ -34,7 +34,7 @@ class ResPartner(models.Model):
         self.ensure_one()
         return {
             "type": "ir.actions.act_window",
-            "name": "Add Products",
+            "name": _("Add Products"),
             "res_model": "partner.product.bulk.add",
             "view_mode": "form",
             "target": "new",
