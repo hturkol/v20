@@ -33,7 +33,7 @@ entity, while keeping full traceability back to the master quotation.
     'depends': ['sale_management', 'project'],
 
     'data': [
-        'security/ir.model.access.csv',
+        'security/ir.access.csv',
 
         'views/res_partner_views.xml',
         'views/sale_order_views.xml',
