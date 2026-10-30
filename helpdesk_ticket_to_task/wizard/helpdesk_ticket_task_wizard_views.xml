@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="helpdesk_ticket_task_wizard_view_form" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.task.wizard.form</field>
+        <field name="model">helpdesk.ticket.task.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <field name="helpdesk_ticket_id" invisible="1"/>
+                    <div class="oe_title">
+                        <h1><field name="name" placeholder="Task title..."/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="project_id" options="{'no_create': True}"/>
+                            <field name="user_id" options="{'no_create': True}"/>
+                        </group>
+                    </group>
+                    <field name="description" placeholder="Description of the task..."/>
+                </sheet>
+                <footer>
+                    <button name="action_create" string="Create Task" type="object" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

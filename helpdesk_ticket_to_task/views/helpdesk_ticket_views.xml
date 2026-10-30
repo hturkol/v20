@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="helpdesk_ticket_view_form_inherit_ticket_to_task" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.form.inherit.ticket.to.task</field>
+        <field name="model">helpdesk.ticket</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//form/header" position="inside">
+                <button name="action_create_task" string="Create Task" type="object" class="btn-primary"
+                        invisible="task_count" groups="project.group_project_user"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_tasks" type="object" class="oe_stat_button" icon="check"
+                        invisible="not task_count" groups="project.group_project_user">
+                    <field name="task_count" string="Tasks" widget="statinfo"/>
+                </button>
+            </xpath>
+        </field>
+    </record>
+</odoo>

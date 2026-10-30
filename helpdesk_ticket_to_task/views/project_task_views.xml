@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="project_task_view_form_inherit_ticket_to_task" model="ir.ui.view">
+        <field name="name">project.task.form.inherit.ticket.to.task</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_helpdesk_ticket" type="object" class="oe_stat_button" icon="support"
+                        string="Ticket" invisible="not helpdesk_ticket_id" groups="helpdesk.group_helpdesk_user"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>
