@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="edit_project_mtr_vessel" model="ir.ui.view">
+        <field name="name">project.project.form.mtr.vessel</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="vessel_id" options="{'no_create': True}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

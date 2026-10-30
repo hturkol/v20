@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_partner_form_mtr_vessel" model="ir.ui.view">
+        <field name="name">res.partner.form.mtr.vessel</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_vessel_orders" type="object" class="oe_stat_button"
+                        icon="fa-file-text-o" invisible="not is_vessel or not vessel_order_count">
+                    <field name="vessel_order_count" widget="statinfo" string="Vessel Orders"/>
+                </button>
+                <button name="action_view_vessel_projects" type="object" class="oe_stat_button"
+                        icon="fa-tasks" invisible="not is_vessel or not vessel_project_count">
+                    <field name="vessel_project_count" widget="statinfo" string="Projects"/>
+                </button>
+                <button name="action_view_vessel_invoices" type="object" class="oe_stat_button"
+                        icon="fa-pencil-square-o" invisible="not is_vessel or not vessel_invoice_count">
+                    <field name="vessel_invoice_count" widget="statinfo" string="Invoices"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']" position="inside">
+                <group string="Vessel" name="mtr_vessel">
+                    <field name="is_vessel"/>
+                    <field name="imo_number" invisible="not is_vessel"/>
+                    <field name="flag_id" invisible="not is_vessel"/>
+                    <field name="vessel_management_id" invisible="not is_vessel"
+                           options="{'no_create': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_filter_mtr_vessel" model="ir.ui.view">
+        <field name="name">res.partner.search.mtr.vessel</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_res_partner_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//filter[@name='inactive']" position="before">
+                <separator/>
+                <filter name="vessels" string="Vessels"
+                        domain="[('is_vessel', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

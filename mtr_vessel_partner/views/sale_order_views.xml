@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_order_form_mtr_vessel" model="ir.ui.view">
+        <field name="name">sale.order.form.mtr.vessel</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header/button[@id='action_confirm']" position="attributes">
+                <attribute name="invisible">state != 'sent' or is_master_quotation</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_confirm' and not(@id)]" position="attributes">
+                <attribute name="invisible">state != 'draft' or is_master_quotation</attribute>
+            </xpath>
+            <xpath expr="//header/button[@name='action_confirm' and not(@id)]" position="after">
+                <button name="action_create_vessel_quotations" type="object"
+                        string="Create Vessel Quotations" class="btn-primary"
+                        invisible="not is_master_quotation or state not in ('draft', 'sent')"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_vessel_orders" type="object" class="oe_stat_button"
+                        icon="fa-ship" invisible="not is_master_quotation">
+                    <field name="vessel_order_count" widget="statinfo" string="Vessel Quotations"/>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='order_line']/list" position="inside">
+                <field name="allocated_amount" optional="show"
+                       column_invisible="not parent.is_master_quotation"/>
+                <field name="remaining_amount" optional="show"
+                       column_invisible="not parent.is_master_quotation"/>
+            </xpath>
+            <xpath expr="//group[@name='sale_reporting']" position="after">
+                <group string="Master / Vessel" name="mtr_vessel_group">
+                    <field name="is_master_quotation" readonly="state not in ('draft', 'sent')"/>
+                    <field name="master_order_id" invisible="is_master_quotation"
+                           readonly="state != 'draft' or master_order_id"
+                           domain="[('is_master_quotation', '=', True)]"
+                           options="{'no_create': True}"/>
+                    <field name="vessel_id" invisible="is_master_quotation"
+                           readonly="state != 'draft' or vessel_id"
+                           domain="[('is_vessel', '=', True)]"
+                           options="{'no_create': True}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_sales_order_filter_mtr_vessel" model="ir.ui.view">
+        <field name="name">sale.order.search.mtr.vessel</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter"/>
+        <field name="arch" type="xml">
+            <xpath expr="//search/group" position="before">
+                <filter name="master_quotations" string="Master Quotations"
+                        domain="[('is_master_quotation', '=', True)]"/>
+                <filter name="vessel_quotations" string="Vessel Quotations"
+                        domain="[('master_order_id', '!=', False)]"/>
+                <separator/>
+            </xpath>
+            <xpath expr="//search/group" position="inside">
+                <filter name="group_master_quotation" string="Master Quotation"
+                        context="{'group_by': 'master_order_id'}"/>
+                <filter name="group_vessel" string="Vessel"
+                        context="{'group_by': 'vessel_id'}"/>
+            </xpath>
+        </field>
+    </record>
+</odoo>

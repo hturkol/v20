@@ -1,0 +1,138 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mtr_vessel_partner
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 19.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-10 00:00+0000\n"
+"PO-Revision-Date: 2026-10-10 00:00+0300\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: tr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_res_partner__is_vessel
+msgid "Vessel"
+msgstr "Gemi"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_res_partner__imo_number
+msgid "IMO Number"
+msgstr "IMO Numarası"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_res_partner__flag_id
+msgid "Flag"
+msgstr "Bayrak"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_res_partner__vessel_management_id
+msgid "Management Company"
+msgstr "Yönetim Şirketi"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_res_partner__vessel_order_ids
+msgid "Vessel Orders"
+msgstr "Gemi Siparişleri"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_res_partner__vessel_project_ids
+msgid "Vessel Projects"
+msgstr "Gemi Projeleri"
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.view_res_partner_filter_mtr_vessel
+msgid "Vessels"
+msgstr "Gemiler"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_sale_order__is_master_quotation
+msgid "Is Master Quotation"
+msgstr "Ana Teklif"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_sale_order__master_order_id
+msgid "Master Quotation"
+msgstr "Ana Teklif"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_sale_order__vessel_order_ids
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.view_order_form_mtr_vessel
+msgid "Vessel Quotations"
+msgstr "Gemi Teklifleri"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_sale_order__vessel_id
+msgid "Vessel"
+msgstr "Gemi"
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.view_order_form_mtr_vessel
+msgid "Create Vessel Quotations"
+msgstr "Gemi Teklifleri Oluştur"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_mtr_vessel_quotation_wizard_alloc__amount
+msgid "Allocated Amount"
+msgstr "Dağıtılan Tutar"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_sale_order_line__allocated_amount
+msgid "Allocated Amount"
+msgstr "Dağıtılan Tutar"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_sale_order_line__remaining_amount
+msgid "Remaining Amount"
+msgstr "Kalan Tutar"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_mtr_vessel_quotation_wizard_alloc__line_subtotal
+msgid "Master Total"
+msgstr "Ana Teklif Toplamı"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_mtr_vessel_quotation_wizard_line__partner_id
+msgid "Legal Entity"
+msgstr "Tüzel Kişilik"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_mtr_vessel_quotation_wizard_line__sale_order_id
+msgid "Existing Quotation"
+msgstr "Mevcut Teklif"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_mtr_vessel_quotation_wizard_line__allocated_total
+msgid "Allocated Total"
+msgstr "Dağıtılan Toplam"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.fields,field_description:mtr_vessel_partner.field_mtr_vessel_quotation_wizard_line__selected
+msgid "Create"
+msgstr "Oluştur"
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.mtr_vessel_quotation_wizard_view_form
+msgid "Vessels"
+msgstr "Gemiler"
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.mtr_vessel_quotation_wizard_view_form
+msgid "Allocation"
+msgstr "Dağıtım"
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.mtr_vessel_quotation_wizard_view_form
+msgid "Create Quotations"
+msgstr "Teklifleri Oluştur"
+
+#. module: mtr_vessel_partner
+#: model:ir.model.constraint,message:mtr_vessel_partner.constraint_mtr_vessel_quotation_wizard_alloc_vessel_line_uniq
+msgid "Each vessel can only have one allocation per product line."
+msgstr "Her gemi, her ürün satırı için yalnızca bir dağıtım satırına sahip olabilir."

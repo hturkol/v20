@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mtr_vessel_quotation_wizard_view_form" model="ir.ui.view">
+        <field name="name">mtr.vessel.quotation.wizard.form</field>
+        <field name="model">mtr.vessel.quotation.wizard</field>
+        <field name="arch" type="xml">
+            <form string="Create Vessel Quotations">
+                <group>
+                    <field name="master_order_id"/>
+                    <field name="partner_id"/>
+                </group>
+                <notebook>
+                    <page name="vessels" string="Vessels">
+                        <field name="line_ids" nolabel="1">
+                            <list editable="bottom">
+                                <field name="selected" width="40px"/>
+                                <field name="vessel_id"/>
+                                <field name="partner_id" optional="show"/>
+                                <field name="imo_number" optional="hide"/>
+                                <field name="allocated_total" readonly="1" widget="monetary" optional="show"/>
+                                <field name="sale_order_id" optional="show"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="wizard_id" column_invisible="1"/>
+                            </list>
+                        </field>
+                    </page>
+                    <page name="allocation" string="Allocation">
+                        <field name="alloc_ids" nolabel="1">
+                            <list editable="bottom" create="0">
+                                <field name="vessel_id" readonly="1" force_save="1"/>
+                                <field name="order_line_id" readonly="1" force_save="1"/>
+                                <field name="product_id" optional="hide"/>
+                                <field name="line_subtotal" readonly="1" widget="monetary" optional="show"/>
+                                <field name="amount" widget="monetary"/>
+                                <field name="currency_id" column_invisible="1"/>
+                                <field name="wizard_id" column_invisible="1"/>
+                            </list>
+                        </field>
+                        <field name="distribution_warning"/>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="action_create_quotations" string="Create Quotations"
+                            type="object" class="btn-primary"/>
+                    <button string="Cancel" special="cancel" class="btn-secondary"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
