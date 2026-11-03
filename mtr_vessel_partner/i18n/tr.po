@@ -136,3 +136,13 @@ msgstr "Teklifleri Oluştur"
 #: model:ir.model.constraint,message:mtr_vessel_partner.constraint_mtr_vessel_quotation_wizard_alloc_vessel_line_uniq
 msgid "Each vessel can only have one allocation per product line."
 msgstr "Her gemi, her ürün satırı için yalnızca bir dağıtım satırına sahip olabilir."
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.mtr_vessel_quotation_wizard_view_form
+msgid "Distribute Equally"
+msgstr "Eşit Dağıt"
+
+#. module: mtr_vessel_partner
+#: model_terms:ir.ui.view,arch_db:mtr_vessel_partner.mtr_vessel_quotation_wizard_view_form
+msgid "Full Amount to Each"
+msgstr "Tutarı Her Gemiye Uygula"

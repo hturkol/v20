@@ -42,6 +42,8 @@
                 <footer>
                     <button name="action_redistribute_equal" string="Distribute Equally"
                             type="object" class="btn-secondary"/>
+                    <button name="action_apply_total_to_each" string="Full Amount to Each"
+                            type="object" class="btn-secondary"/>
                     <button name="action_create_quotations" string="Create Quotations"
                             type="object" class="btn-primary"/>
                     <button string="Cancel" special="cancel" class="btn-secondary"/>

@@ -35,28 +35,34 @@ class MtrVesselQuotationWizard(models.TransientModel):
             or self.env.context.get('active_id'))
         if not master.exists():
             return res
-        vessels = self.env['res.partner'].search([
-            ('is_vessel', '=', True),
-            '|',
-            ('vessel_management_id.commercial_partner_id', '=',
-             master.partner_id.commercial_partner_id.id),
-            ('parent_id.commercial_partner_id', '=',
-             master.partner_id.commercial_partner_id.id),
-        ])
+        commercial = master.partner_id.commercial_partner_id
+        vessels = self.env['res.partner'].search([('is_vessel', '=', True)])
+        # Vessels linked to the master partner (via management company or their
+        # legal entity / parent) are pre-selected; all other vessels are still
+        # listed so the user can include them with a single click.
+        matched_ids = {
+            vessel.id for vessel in vessels
+            if commercial.id in (
+                vessel.vessel_management_id | vessel.parent_id
+            ).commercial_partner_id.ids
+        }
         existing = {
             order.vessel_id.id: order.id
             for order in master.vessel_order_ids
             if order.vessel_id
         }
-        new_vessels = vessels.filtered(lambda vessel: vessel.id not in existing)
+        new_vessels = vessels.filtered(
+            lambda vessel: vessel.id in matched_ids and vessel.id not in existing)
         if 'line_ids' in fields_list:
+            ordered = vessels.sorted(
+                key=lambda v: (v.id not in matched_ids, v.name or ''))
             res['line_ids'] = [
                 Command.create({
                     'vessel_id': vessel.id,
                     'sale_order_id': existing.get(vessel.id),
-                    'selected': vessel.id not in existing,
+                    'selected': vessel.id in matched_ids and vessel.id not in existing,
                 })
-                for vessel in vessels
+                for vessel in ordered
             ]
         if 'alloc_ids' in fields_list and new_vessels:
             res['alloc_ids'] = [
@@ -97,15 +103,40 @@ class MtrVesselQuotationWizard(models.TransientModel):
             else:
                 wizard.distribution_warning = False
 
+    def _set_allocation_amount(self, vessel, order_line, amount):
+        alloc = self.alloc_ids.filtered(
+            lambda a: a.vessel_id == vessel and a.order_line_id == order_line)
+        if alloc:
+            alloc.amount = amount
+        else:
+            self.alloc_ids = [Command.create({
+                'vessel_id': vessel.id,
+                'order_line_id': order_line.id,
+                'amount': amount,
+            })]
+
+    def _reopen_action(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }
+
+    def _get_selected_vessels(self):
+        selected = self.line_ids.filtered(
+            lambda line: line.selected and line.vessel_id).vessel_id
+        if not selected:
+            raise UserError(_('Please select at least one vessel.'))
+        return selected
+
     def action_redistribute_equal(self):
         """Split each master line's remaining amount equally over the selected
         vessels. Existing allocation values for those vessels are overwritten,
         so this is a 'reset to equal shares' action the user can tweak after."""
         self.ensure_one()
-        selected = self.line_ids.filtered(
-            lambda line: line.selected and line.vessel_id).vessel_id
-        if not selected:
-            raise UserError(_('Please select at least one vessel.'))
+        selected = self._get_selected_vessels()
         count = len(selected)
         for line in self.master_order_id.order_line:
             if line.display_type or line.is_downpayment:
@@ -119,24 +150,21 @@ class MtrVesselQuotationWizard(models.TransientModel):
                 else:
                     amount = share
                     distributed = self.currency_id.round(distributed + amount)
-                amount = max(0.0, amount)
-                alloc = self.alloc_ids.filtered(
-                    lambda a: a.vessel_id == vessel and a.order_line_id == line)
-                if alloc:
-                    alloc.amount = amount
-                else:
-                    self.alloc_ids = [Command.create({
-                        'vessel_id': vessel.id,
-                        'order_line_id': line.id,
-                        'amount': amount,
-                    })]
-        return {
-            'type': 'ir.actions.act_window',
-            'res_model': self._name,
-            'res_id': self.id,
-            'view_mode': 'form',
-            'target': 'new',
-        }
+                self._set_allocation_amount(vessel, line, max(0.0, amount))
+        return self._reopen_action()
+
+    def action_apply_total_to_each(self):
+        """Assign each selected vessel the FULL master line total — the master
+        amount is not split, it is applied per vessel (allocated total will
+        exceed the master total; the warning banner shows the difference)."""
+        self.ensure_one()
+        selected = self._get_selected_vessels()
+        for line in self.master_order_id.order_line:
+            if line.display_type or line.is_downpayment:
+                continue
+            for vessel in selected:
+                self._set_allocation_amount(vessel, line, line.price_subtotal)
+        return self._reopen_action()
 
     def action_create_quotations(self):
         self.ensure_one()
@@ -202,7 +230,7 @@ class MtrVesselQuotationWizardLine(models.TransientModel):
                 line.wizard_id.alloc_ids.filtered(
                     lambda alloc: alloc.vessel_id == line.vessel_id).mapped('amount'))
 
-    @api.onchange('vessel_id')
+    @api.onchange('vessel_id', 'selected')
     def _onchange_vessel_id(self):
         existing = {
             order.vessel_id.id: order.id

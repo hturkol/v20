@@ -109,7 +109,11 @@ class TestMtrVesselPartner(TransactionCase):
     def test_wizard_default_lines(self):
         vals = self.Wizard.with_context(
             default_master_order_id=self.master.id).default_get(['line_ids', 'alloc_ids'])
-        self.assertEqual(len(vals['line_ids']), 3)
+        # all matched vessels are listed and pre-selected
+        line_cmds = {cmd[2]['vessel_id']: cmd[2] for cmd in vals['line_ids']}
+        for vessel in (self.vessel_a | self.vessel_b | self.vessel_c):
+            self.assertIn(vessel.id, line_cmds)
+            self.assertTrue(line_cmds[vessel.id]['selected'])
         # 3 vessels x 2 master lines, equal split of the remaining totals
         self.assertEqual(len(vals['alloc_ids']), 6)
         # every generated allocation must carry vessel + master line references
@@ -120,6 +124,19 @@ class TestMtrVesselPartner(TransactionCase):
             cmd[2]['amount'] for cmd in vals['alloc_ids']
             if cmd[2]['order_line_id'] == self.master_line.id]
         self.assertAlmostEqual(sum(amounts_line), 160.0)
+
+    def test_redistribute_and_apply_total_actions(self):
+        wizard = self._create_wizard(self.vessel_a | self.vessel_b)
+        # Full amount to each: every selected vessel gets the master total
+        wizard.action_apply_total_to_each()
+        allocs_a = wizard.alloc_ids.filtered(
+            lambda a: a.vessel_id == self.vessel_a and a.order_line_id == self.master_line)
+        self.assertEqual(allocs_a.amount, self.master_line.price_subtotal)
+        # Distribute equally: splits the remaining total again
+        wizard.action_redistribute_equal()
+        allocs = wizard.alloc_ids.filtered(
+            lambda a: a.order_line_id == self.master_line)
+        self.assertAlmostEqual(sum(allocs.mapped('amount')), 160.0)
 
     def test_create_vessel_orders_variable_amounts(self):
         wizard = self._create_wizard(
