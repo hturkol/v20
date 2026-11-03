@@ -37,7 +37,10 @@ class MtrVesselQuotationWizard(models.TransientModel):
             return res
         vessels = self.env['res.partner'].search([
             ('is_vessel', '=', True),
+            '|',
             ('vessel_management_id.commercial_partner_id', '=',
+             master.partner_id.commercial_partner_id.id),
+            ('parent_id.commercial_partner_id', '=',
              master.partner_id.commercial_partner_id.id),
         ])
         existing = {
@@ -93,6 +96,47 @@ class MtrVesselQuotationWizard(models.TransientModel):
                 ) % (_('Allocated amounts differ from the master line totals:'), ''.join(items))
             else:
                 wizard.distribution_warning = False
+
+    def action_redistribute_equal(self):
+        """Split each master line's remaining amount equally over the selected
+        vessels. Existing allocation values for those vessels are overwritten,
+        so this is a 'reset to equal shares' action the user can tweak after."""
+        self.ensure_one()
+        selected = self.line_ids.filtered(
+            lambda line: line.selected and line.vessel_id).vessel_id
+        if not selected:
+            raise UserError(_('Please select at least one vessel.'))
+        count = len(selected)
+        for line in self.master_order_id.order_line:
+            if line.display_type or line.is_downpayment:
+                continue
+            remaining = max(0.0, line.price_subtotal - line.allocated_amount)
+            share = self.currency_id.round(remaining / count)
+            distributed = 0.0
+            for index, vessel in enumerate(selected):
+                if index == count - 1:
+                    amount = self.currency_id.round(remaining - distributed)
+                else:
+                    amount = share
+                    distributed = self.currency_id.round(distributed + amount)
+                amount = max(0.0, amount)
+                alloc = self.alloc_ids.filtered(
+                    lambda a: a.vessel_id == vessel and a.order_line_id == line)
+                if alloc:
+                    alloc.amount = amount
+                else:
+                    self.alloc_ids = [Command.create({
+                        'vessel_id': vessel.id,
+                        'order_line_id': line.id,
+                        'amount': amount,
+                    })]
+        return {
+            'type': 'ir.actions.act_window',
+            'res_model': self._name,
+            'res_id': self.id,
+            'view_mode': 'form',
+            'target': 'new',
+        }
 
     def action_create_quotations(self):
         self.ensure_one()
@@ -167,6 +211,29 @@ class MtrVesselQuotationWizardLine(models.TransientModel):
         }
         self.sale_order_id = existing.get(self.vessel_id.id)
         self.selected = not self.sale_order_id
+        self._suggest_allocations_for_vessel()
+
+    def _suggest_allocations_for_vessel(self):
+        """When a vessel is picked manually on the list, suggest allocation rows
+        for it (equal share of each line's remaining amount over the currently
+        selected vessels). Suggestions are editable in the Allocation tab."""
+        wizard = self.wizard_id
+        vessel = self.vessel_id
+        if not wizard or not wizard.master_order_id or not vessel or not self.selected:
+            return
+        if vessel in wizard.alloc_ids.vessel_id:
+            return
+        count = len(wizard.line_ids.filtered(
+            lambda line: line.selected and line.vessel_id)) or 1
+        for line in wizard.master_order_id.order_line:
+            if line.display_type or line.is_downpayment:
+                continue
+            remaining = max(0.0, line.price_subtotal - line.allocated_amount)
+            wizard.alloc_ids |= self.env['mtr.vessel.quotation.wizard.alloc'].new({
+                'vessel_id': vessel.id,
+                'order_line_id': line.id,
+                'amount': max(0.0, wizard.currency_id.round(remaining / count)),
+            })
 
     @api.constrains('vessel_id')
     def _check_vessel_id(self):
