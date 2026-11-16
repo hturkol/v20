@@ -67,6 +67,20 @@ class ResPartner(models.Model):
             return {}
         return super().onchange_parent_id()
 
+    @api.onchange('is_linked_company')
+    def _onchange_is_linked_company(self):
+        # 'contact' children inherit the parent's address and cannot edit their
+        # own; 'other' is exempt from address sync, so a linked company gets an
+        # editable address block (and keeps it on save, see _set_group_parent).
+        self.type = 'other' if self.is_linked_company else 'contact'
+
+    @api.onchange('type')
+    def _onchange_type_linked_company(self):
+        # address types (invoice/delivery/other address kinds) cannot carry an
+        # independent commercial identity
+        if self.type not in ('contact', 'other'):
+            self.is_linked_company = False
+
     # --- Writing ---
     def write(self, vals):
         if 'is_linked_company' in vals and not vals['is_linked_company']:
