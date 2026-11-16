@@ -162,7 +162,6 @@ class SaleOrder(models.Model):
             'company_id': self.company_id.id,
             'validity_date': self.validity_date,
             'origin': self.name,
-            'client_order_ref': vessel.name,
             'note': self.note,
             'master_order_id': self.id,
             'vessel_id': vessel.id,
