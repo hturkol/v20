@@ -8,6 +8,7 @@
 
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
+from odoo.tools import SQL
 
 
 class ResPartner(models.Model):
@@ -145,6 +146,52 @@ class ResPartner(models.Model):
             partner.modified(list(write_vals))
             partner._check_parent_id()
         self._check_company(['parent_id'])
+
+    # --- Invoice totals ---
+    def _invoice_total(self):
+        # Linked companies keep their own commercial entity, so core totals
+        # that attribute invoices to the commercial partner miss them on the
+        # group company. Aggregate posted customer invoices over the whole
+        # parent hierarchy instead, walking parent_id up to each ancestor.
+        self.total_invoiced = 0.0
+        if not self.ids:
+            return
+        all_partners = self.with_context(active_test=False).search_fetch(
+            [('id', 'child_of', self.ids)], ['parent_id'])
+        query_res = self.env.execute_query(SQL(
+            """SELECT move.partner_id, SUM(move.amount_total_signed * COALESCE(currency_rate.rate, 1))
+                 FROM account_move move
+                 LEFT JOIN res_partner partner
+                   ON partner.id = move.partner_id
+                 LEFT JOIN res_company company
+                   ON company.id = COALESCE(partner.company_id, %(default_company_id)s)
+                 /* To use the exchange rate effective at the creation of the invoice. */
+                 LEFT JOIN LATERAL (
+                     SELECT rate
+                       FROM res_currency_rate
+                      WHERE company_id = move.company_id
+                        AND currency_id = company.currency_id
+                        AND name < move.date
+                      ORDER BY name DESC
+                      LIMIT 1
+                 ) currency_rate
+                   ON TRUE
+                WHERE move.state NOT IN ('draft', 'cancel')
+                  AND move.company_id IN %(company_ids)s
+                  AND move.partner_id IN %(partner_ids)s
+                  AND move.move_type IN ('out_invoice', 'out_refund')
+                GROUP BY move.partner_id""",
+            partner_ids=tuple(all_partners.ids),
+            company_ids=tuple(self.env.companies.ids),
+            default_company_id=self.env.company.id,
+        ))
+        all_partners_by_id = {partner.id: partner for partner in all_partners}
+        for partner_id, total in query_res:
+            partner = all_partners_by_id[partner_id]
+            while partner:
+                if partner in self:
+                    partner.total_invoiced += total
+                partner = partner.parent_id
 
     # --- Actions ---
     def action_view_linked_projects(self):
