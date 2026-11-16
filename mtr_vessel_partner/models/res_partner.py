@@ -32,6 +32,14 @@ class ResPartner(models.Model):
     vessel_project_count = fields.Integer('# Projects', compute='_compute_vessel_counts', compute_sudo=True)
     vessel_invoice_count = fields.Integer('# Invoices', compute='_compute_vessel_counts', compute_sudo=True)
 
+    @api.onchange('parent_id', 'is_vessel')
+    def _onchange_vessel_management(self):
+        # the parent company acts as the management company by default, so it
+        # doesn't have to be picked a second time; it stays editable for the
+        # cases where a separate ship manager operates the vessel
+        if self.is_vessel and self.parent_id and not self.vessel_management_id:
+            self.vessel_management_id = self.parent_id
+
     @api.constrains('is_vessel', 'imo_number', 'company_id')
     def _check_vessel_imo_unique(self):
         for partner in self.filtered(lambda p: p.is_vessel and p.imo_number):
