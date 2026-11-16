@@ -16,15 +16,17 @@
                     <field name="is_linked_company" invisible="not parent_id"/>
                 </group>
             </xpath>
-            <xpath expr="//field[@name='child_ids']/form//field[@name='function']/parent::div" position="after">
-                <div class="d-flex align-items-baseline w-md-50 gap-2" invisible="type != 'contact'">
-                    <i class="oi oi-filled d-none d-md-block" data-icon="building" title="Independent Company"/>
-                    <field name="is_linked_company"/>
+            <xpath expr="//field[@name='child_ids']/form//field[@name='type']" position="after">
+                <div class="d-flex align-items-center gap-2 mb-2" invisible="type != 'contact'">
+                    <field name="is_linked_company" nolabel="1"/>
+                    <label for="is_linked_company" class="mb-0"/>
                 </div>
-                <div class="d-flex align-items-baseline w-md-50 gap-2" invisible="not is_linked_company">
-                    <i class="oi oi-filled d-none d-md-block" data-icon="id-card" title="Tax ID"/>
-                    <field name="vat" placeholder="Tax ID"/>
-                </div>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form//group[@name='other_info']" position="attributes">
+                <attribute name="invisible">type == 'contact' and not is_linked_company</attribute>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/form//div[@name='div_address']" position="after">
+                <field name="vat" invisible="not is_linked_company"/>
             </xpath>
         </field>
     </record>
