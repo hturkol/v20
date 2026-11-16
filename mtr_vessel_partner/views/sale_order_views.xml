@@ -22,7 +22,7 @@
                     <field name="vessel_order_count" widget="statinfo" string="Vessel Quotations"/>
                 </button>
             </xpath>
-            <xpath expr="//field[@name='order_line']/list/field[@name='price_subtotal']" position="after">
+            <xpath expr="//field[@name='order_line']/list" position="inside">
                 <field name="allocated_amount" optional="show"
                        column_invisible="not parent.is_master_quotation"/>
                 <field name="remaining_amount" optional="show"
