@@ -22,12 +22,21 @@ class ResPartner(models.Model):
              '(child_of hierarchy).')
     linked_company_count = fields.Integer(
         '# Linked Companies', compute='_compute_linked_company_count', compute_sudo=True)
+    linked_project_count = fields.Integer(
+        '# Linked Projects', compute='_compute_linked_project_count', compute_sudo=True)
 
     @api.depends('child_ids.is_linked_company')
     def _compute_linked_company_count(self):
         for partner in self:
             partner.linked_company_count = len(
                 partner.child_ids.filtered('is_linked_company'))
+
+    @api.depends('child_ids')
+    def _compute_linked_project_count(self):
+        Project = self.env['project.project']
+        for partner in self:
+            partner.linked_project_count = Project.search_count(
+                [('partner_id', 'child_of', partner.id)])
 
     # --- Commercial entity ---
     # In v20, every partner with a parent_id takes the parent's commercial
@@ -138,6 +147,16 @@ class ResPartner(models.Model):
         self._check_company(['parent_id'])
 
     # --- Actions ---
+    def action_view_linked_projects(self):
+        self.ensure_one()
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Projects'),
+            'res_model': 'project.project',
+            'view_mode': 'kanban,list,form',
+            'domain': [('partner_id', 'child_of', self.id)],
+        }
+
     def action_view_linked_companies(self):
         self.ensure_one()
         return {

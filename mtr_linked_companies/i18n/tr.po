@@ -75,3 +75,19 @@ msgstr "Seçilen ana şirket mevcut değil."
 #: model:ir.model.fields,field_description:mtr_linked_companies.field_sale_order__group_company_id
 msgid "Parent (group) company of the customer, for consolidated reporting."
 msgstr "Konsolide raporlama için müşterinin bağlı olduğu ana (grup) şirketi."
+
+#. module: mtr_linked_companies
+#: model:ir.model.fields,field_description:mtr_linked_companies.field_res_partner__linked_project_count
+msgid "# Linked Projects"
+msgstr "# Bağlı Projeler"
+
+#. module: mtr_linked_companies
+#. odoo-python
+#: code:addons/mtr_linked_companies/models/res_partner.py:0
+msgid "Projects"
+msgstr "Projeler"
+
+#. module: mtr_linked_companies
+#: model_terms:ir.ui.view,arch_db:mtr_linked_companies.view_partner_form_mtr_linked
+msgid "Projects"
+msgstr "Projeler"

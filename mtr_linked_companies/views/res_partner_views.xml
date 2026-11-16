@@ -10,6 +10,10 @@
                         icon="fa-building" invisible="not linked_company_count">
                     <field name="linked_company_count" widget="statinfo" string="Linked Companies"/>
                 </button>
+                <button name="action_view_linked_projects" type="object" class="oe_stat_button"
+                        icon="fa-folder-open" invisible="not linked_project_count">
+                    <field name="linked_project_count" widget="statinfo" string="Projects"/>
+                </button>
             </xpath>
             <xpath expr="//page[@name='sales_purchases']/group[@name='container_row_2']" position="inside">
                 <group string="Company Group" name="mtr_linked_companies">

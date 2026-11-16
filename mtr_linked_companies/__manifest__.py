@@ -32,7 +32,7 @@ documents.
     'author': 'Projet İş Çözümleri Ltd. Şti.',
     'website': 'https://projet.solutions',
 
-    'depends': ['account', 'sale_management'],
+    'depends': ['account', 'sale_management', 'project'],
 
     'data': [
         'views/res_partner_views.xml',
